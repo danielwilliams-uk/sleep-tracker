@@ -8,6 +8,7 @@ import helmet from "helmet";
 import Template from "./../template";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
+import sleepRoutes from "./routes/sleep.routes";
 import path from "path";
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(helmet());
 app.use(cors());
 app.use("/", userRoutes);
 app.use("/", authRoutes);
+app.use("/", sleepRoutes);
 
 // Auth error handling... Catch unauthorised errors
 app.use((err, req, res, next) => {
