@@ -10,6 +10,13 @@ import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import sleepRoutes from "./routes/sleep.routes";
 import path from "path";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import MainRouter from "./../client/MainRouter";
+import { StaticRouter } from "react-router-dom";
+import { ServerStyleSheets, ThemeProvider } from "@material-ui/styles";
+import theme from "./../client/theme";
+import { Server } from "http";
 
 const app = express();
 devBundle.compile(app);
@@ -18,11 +25,29 @@ devBundle.compile(app);
 const CURRENT_WORKING_DIR = process.cwd();
 app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")));
 
-console.log(`CWD: ${CURRENT_WORKING_DIR}`);
+app.get("*", (req, res) => {
+  const sheets = new ServerStyleSheets();
+  const context = {};
+  const markup = ReactDOMServer.renderToString(
+    sheets.collect(
+      <StaticRouter location={req.url} context={context}>
+        <ThemeProvider theme={theme}>
+          <MainRouter />
+        </ThemeProvider>
+      </StaticRouter>
+    )
+  );
 
-// Serve the template at the root URL
-app.get("/", (req, res) => {
-  res.status(200).send(Template());
+  if (context.url) {
+    return res.redirect(303, context.url);
+  }
+  const css = sheets.toString();
+  res.status(200).send(
+    Template({
+      markup: markup,
+      css: css,
+    })
+  );
 });
 
 //Add middleware ( Added modules to configure Express)
