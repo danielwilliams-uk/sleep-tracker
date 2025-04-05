@@ -38,7 +38,6 @@ export default function Users() {
       if (data && data.error) {
         console.log(data.error);
       } else {
-        console.log("Data: ", data);
         setUsers(data);
       }
     });
