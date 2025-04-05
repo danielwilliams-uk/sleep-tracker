@@ -9,12 +9,12 @@ const addSleepData = async (req, res) => {
       gender,
       sleepDuration,
       date: new Date(),
-      userId: req.user._id,
+      userId: req.auth.user._id,
     });
     await sleepData.save();
-    return res.status(201).json(sleepData);
+    return res.status(200).json(sleepData);
   } catch (err) {
-    return res.status(500).json(dbErrorHandler.getErrorMessage(err));
+    return res.status(400).json(dbErrorHandler.getErrorMessage(err));
   }
 };
 
