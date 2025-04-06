@@ -8,6 +8,7 @@ import Profile from "./user/Profile";
 import EditProfile from "./user/EditProfile";
 import PrivateRoute from "./auth/PrivateRoute";
 import Menu from "./core/Menu";
+import NewSleepData from "./sleepdata/NewSleepData";
 
 const MainRouter = () => {
   return (
@@ -19,6 +20,7 @@ const MainRouter = () => {
         <Route path="/signup" component={Signup} />
         <Route path="/signin" component={Signin} />
         <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
+        <PrivateRoute path="/sleepdate/new" component={NewSleepData} />
         <Route path="/user/:userId" component={Profile} />
       </Switch>
     </div>
