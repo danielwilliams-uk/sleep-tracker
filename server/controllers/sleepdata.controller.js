@@ -1,9 +1,10 @@
 import SleepData from "../models/SleepData";
 import dbErrorHandler from "../helpers/dbErrorHandler";
 
-const addSleepData = async (req, res) => {
-  const { name, gender, sleepDuration } = req.body;
+const create = async (req, res) => {
   try {
+    req.body.recorded_by = req.auth._id;
+    const { name, gender, sleepDuration } = req.body;
     const sleepData = new SleepData({
       name,
       gender,
@@ -12,7 +13,10 @@ const addSleepData = async (req, res) => {
       userId: req.auth.user._id,
     });
     await sleepData.save();
-    return res.status(200).json(sleepData);
+    return res.status(200).json({
+      message: "Sleep data recorded!",
+      sleepData,
+    });
   } catch (err) {
     return res.status(400).json(dbErrorHandler.getErrorMessage(err));
   }
@@ -30,4 +34,4 @@ const getUserSleepData = async (req, res) => {
   }
 };
 
-export default { addSleepData, getUserSleepData };
+export default { create, getUserSleepData };
