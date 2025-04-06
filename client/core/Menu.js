@@ -19,29 +19,37 @@ const isActive = (history, path) => {
 const Menu = withRouter(({ history }) => (
   <AppBar position="static" color="primary">
     <Toolbar>
-      <Typography variant="h6" color="inherit">
-        Sleep Tracker App
-      </Typography>
       <Link to="/">
         <IconButton aria-label="Home" style={isActive(history, "/")}>
           <HomeIcon />
         </IconButton>
       </Link>
-      <Link to="/users" style={{ textDecoration: "none" }}>
-        <Button style={isActive(history, "/users")}>Users</Button>
-      </Link>
-      {!auth.isAuthenticated() && (
-        <span>
-          <Link to="/signup" style={{ textDecoration: "none" }}>
-            <Button style={isActive(history, "/signup/")}>Sign up</Button>
-          </Link>
-          <Link to="/signin" style={{ textDecoration: "none" }}>
-            <Button style={isActive(history, "/signin")}>Sign in</Button>
-          </Link>
+      <Typography variant="h6" color="inherit">
+        Sleep Tracker
+      </Typography>
+
+      <div style={{ position: "absolute", right: 10 }}>
+        <span style={{ float: "right" }}>
+          {!auth.isAuthenticated() && (
+            <span>
+              <Link to="/signup" style={{ textDecoration: "none" }}>
+                <Button style={isActive(history, "/signup/")}>Sign up</Button>
+              </Link>
+              <Link to="/signin" style={{ textDecoration: "none" }}>
+                <Button style={isActive(history, "/signin")}>Log in</Button>
+              </Link>
+            </span>
+          )}
         </span>
-      )}
+      </div>
+
       {auth.isAuthenticated() && (
         <span>
+          <Link to="/sleepdata/new">
+            <Button style={isButtonActive(history, "/expenses/new")}>
+              <AddIcon style={{ marginRight: 4 }} /> Add Sleep Data
+            </Button>
+          </Link>
           <Link to={"/user/" + auth.isAuthenticated().user._id}>
             <Button
               style={isActive(
@@ -56,7 +64,7 @@ const Menu = withRouter(({ history }) => (
             color="inherit"
             style={{ paddingTop: 12 }}
             onClick={() => {
-              auth.clearJWT(() => history.push);
+              auth.clearJWT(() => history.push("/"));
             }}
           >
             Sign out
