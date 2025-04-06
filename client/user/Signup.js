@@ -80,7 +80,9 @@ export default function Signup() {
     <div>
       <Card className={classes.card}>
         <CardContent>
-          <Typography>Sign Up</Typography>
+          <Typography variant="body1" component="p">
+            Sign up to start your journey to better sleep today.
+          </Typography>
           <TextField
             id="name"
             label="Name"
