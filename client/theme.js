@@ -7,23 +7,34 @@ import { pink } from "@material-ui/core/colors";
 const theme = createTheme({
   typography: {
     useNextVariants: true,
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
+
   palette: {
     primary: {
-      light: "#5c67a3",
-      main: "#1976D2",
-      dark: "#2e355b",
-      contrastText: "#fff",
+      main: "#5C6BC0",
+      light: "#8E99F3",
+      dark: "#26418F",
+      contrastText: "#ffffff",
     },
     secondary: {
-      light: "#ff79b0",
-      main: "#ff4081",
-      dark: "#c60055",
-      contrastText: "#000",
+      main: "#BA68C8",
+      light: "#E1BEE7",
+      dark: "#883997",
+      contrastText: "#ffffff",
     },
     openTitle: "#1976D2",
     protectedTitle: pink["400"],
     type: "light",
+
+    background: {
+      default: "#F3F4F6",
+      paper: "#ffffff",
+    },
+    text: {
+      primary: "#8E99F3",
+      secondary: "#5F6368",
+    },
   },
 });
 
