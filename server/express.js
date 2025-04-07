@@ -14,37 +14,47 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import MainRouter from "./../client/MainRouter";
 import { StaticRouter } from "react-router-dom";
-import { ServerStyleSheets, ThemeProvider } from "@material-ui/styles";
 import theme from "./../client/theme";
+import { CacheProvider } from "@emotion/react";
+import createEmotionServer from "@emotion/server/create-instance";
+import createEmotionCache from "./../client/createEmotionCache";
+import { ThemeProvider } from "@mui/material/styles";
 
 const app = express();
 devBundle.compile(app);
 // configure to serve static files from dist folder
-
 const CURRENT_WORKING_DIR = process.cwd();
 app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")));
 
+// Replace ServerStyleSheets logic with Emotion's ssr (stuff in older template deprecated for ssr)
+// Breaking changes from migrating to @mui. See docs: https://mui.com/x/migration/migration-pickers-lab/
 app.get("*", (req, res) => {
-  const sheets = new ServerStyleSheets();
+  const cache = createEmotionCache();
+  const { extractCriticalToChunks, constructStyleTagsFromChunks } =
+    createEmotionServer(cache);
+
   const context = {};
   const markup = ReactDOMServer.renderToString(
-    sheets.collect(
+    <CacheProvider value={cache}>
       <StaticRouter location={req.url} context={context}>
         <ThemeProvider theme={theme}>
           <MainRouter />
         </ThemeProvider>
       </StaticRouter>
-    )
+    </CacheProvider>
   );
 
   if (context.url) {
     return res.redirect(303, context.url);
   }
-  const css = sheets.toString();
+
+  const emotionChunks = extractCriticalToChunks(markup);
+  const emotionCss = constructStyleTagsFromChunks(emotionChunks);
+
   res.status(200).send(
     Template({
-      markup: markup,
-      css: css,
+      markup,
+      css: emotionCss,
     })
   );
 });
