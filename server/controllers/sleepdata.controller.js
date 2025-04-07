@@ -23,14 +23,19 @@ const create = async (req, res) => {
 };
 
 // Get sleep data for a user
-const getUserSleepData = async (req, res) => {
+const getUserSleepData = async (req, res, next, id) => {
   try {
-    const sleepData = await SleepData.find({ userId: req.user._id }).sort({
-      date: -1,
-    });
-    return res.status(200).json(sleepData);
+    const sleepData = await SleepData.findByid(id)
+      .populate("userId", "_id name")
+      .exec();
+    if (!sleepData)
+      return res.status("400").json({
+        error: "Sleep data not found",
+      });
+    req.sleepData = sleepData;
+    next();
   } catch (err) {
-    return res.status(500).json({ error: dbErrorHandler.getErrorMessage(err) });
+    return res.status(400).json({ error: dbErrorHandler.getErrorMessage(err) });
   }
 };
 
