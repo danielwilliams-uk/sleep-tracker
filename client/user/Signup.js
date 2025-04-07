@@ -1,48 +1,22 @@
 import React, { useState } from "react";
-import { create } from "./api-user";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Icon from "@material-ui/core/Icon";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Icon,
+} from "@mui/material";
 import { Link } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-  card: {
-    maxWidth: 600,
-    margin: "auto",
-    textAlign: "center",
-    marginTop: theme.spacing(5),
-    paddingBottom: theme.spacing(2),
-  },
-  error: {
-    verticalAlign: "middle",
-  },
-  title: {
-    marginTop: theme.spacing(2),
-    color: theme.palette.openTitle,
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 300,
-  },
-  submit: {
-    margin: "auto",
-    marginBottom: theme.spacing(2),
-  },
-}));
+import { create } from "./api-user";
 
 export default function Signup() {
-  const classes = useStyles();
   const [values, setValues] = useState({
     name: "",
     password: "",
@@ -78,15 +52,25 @@ export default function Signup() {
 
   return (
     <div>
-      <Card className={classes.card}>
+      <Card
+        sx={{
+          maxWidth: 600,
+          margin: "auto",
+          textAlign: "center",
+          marginTop: 5,
+          paddingBottom: 2,
+        }}
+      >
         <CardContent>
-          <Typography variant="body1" component="p">
-            Sign up to start your journey to better sleep today.
-          </Typography>
+          <CardContent>
+            <Typography variant="body1" component="p">
+              Sign up to start your journey to better sleep today.
+            </Typography>
+          </CardContent>
           <TextField
             id="name"
             label="Name"
-            className={classes.textField}
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
             value={values.name}
             onChange={handleChange("name")}
           />
@@ -95,7 +79,7 @@ export default function Signup() {
             id="email"
             type="email"
             label="Email"
-            className={classes.textField}
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
             value={values.email}
             onChange={handleChange("email")}
             margin="normal"
@@ -105,7 +89,7 @@ export default function Signup() {
             id="password"
             type="password"
             label="Password"
-            className={classes.textField}
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
             value={values.password}
             onChange={handleChange("password")}
             margin="normal"
@@ -113,7 +97,7 @@ export default function Signup() {
           <br />
           {values.error && (
             <Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>
+              <Icon color="error" sx={{ verticalAlign: "middle" }}>
                 error
               </Icon>
               {values.error}
@@ -125,7 +109,7 @@ export default function Signup() {
             color="primary"
             variant="contained"
             onClick={clickSubmit}
-            className={classes.submit}
+            sx={{ margin: "auto", marginBottom: 2 }}
           >
             Submit
           </Button>

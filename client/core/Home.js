@@ -1,54 +1,23 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import cat from "./../assets/images/cat-sleeping.jpg";
-import CardMedia from "@material-ui/core/CardMedia";
+import { Card, CardContent, Typography, CardMedia } from "@mui/material";
 import auth from "../auth/auth-helper";
 import { Link } from "react-router-dom";
-// import SleepDataverview from "../sleepdata/SleepDataOverview";
-
-const useStyles = makeStyles((theme) => ({
-  card: {
-    maxWidth: 600,
-    margin: "auto",
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
-    // backgroundColor: theme.palette.primary.dark,
-  },
-  title: {
-    padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(
-      2
-    )}px`,
-    color: theme.palette.openTitle,
-  },
-  media: {
-    minHeight: 400,
-  },
-  credit: {
-    padding: 10,
-    textAlign: "right",
-    backgroundColor: "#ededed",
-    borderBottom: "1px solid #d0d0d0",
-    "& a": {
-      color: "#3f4771",
-    },
-  },
-}));
+import cat from "./../assets/images/cat-sleeping.jpg";
 
 export default function Home() {
-  const classes = useStyles();
   return (
     <>
       {/* {auth.isAuthenticated() && <SleepDataOverview />} */}
       {!auth.isAuthenticated() && typeof window !== "undefined" && (
-        <Card className={classes.card}>
-          <CardMedia
-            className={classes.media}
-            image={cat}
-            title="Unicorn Bicycle"
-          />
+        <Card
+          sx={{
+            maxWidth: 600,
+            margin: "auto",
+            marginTop: 5,
+            marginBottom: 5,
+          }}
+        >
+          <CardMedia sx={{ minHeight: 400 }} image={cat} title="Cat" />
           <CardContent style={{ textAlign: "center" }}>
             <Typography variant="body1" component="p">
               Welcome to Sleep Tracker. <Link to="/signup">Sign up</Link> to

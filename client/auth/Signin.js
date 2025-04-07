@@ -1,44 +1,19 @@
 import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  TextField,
+  Button,
+  Icon,
+} from "@mui/material";
 import auth from "./../auth/auth-helper";
 import { signin } from "./api-auth";
 import { Redirect } from "react-router";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import Icon from "@material-ui/core/Icon";
-const useStyles = makeStyles((theme) => ({
-  card: {
-    maxWidth: 600,
-    margin: "auto",
-    textAlign: "center",
-    marginTop: theme.spacing(5),
-    paddingBottom: theme.spacing(2),
-  },
-  error: {
-    verticalAlign: "middle",
-  },
-  title: {
-    marginTop: theme.spacing(2),
-    color: theme.palette.openTitle,
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 300,
-  },
-  submit: {
-    margin: "auto",
-    marginBottom: theme.spacing(2),
-  },
-}));
 
 export default function Signin(props) {
-  const classes = useStyles();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -79,7 +54,15 @@ export default function Signin(props) {
   }
 
   return (
-    <Card className={classes.card}>
+    <Card
+      sx={{
+        maxWidth: 600,
+        margin: "auto",
+        textAlign: "center",
+        marginTop: 5,
+        paddingBottom: 2,
+      }}
+    >
       <CardContent>
         <CardContent style={{ textAlign: "center" }}>
           <Typography variant="body1" component="p">
@@ -90,7 +73,7 @@ export default function Signin(props) {
           id="email"
           type="email"
           label="Email"
-          className={classes.textField}
+          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
           value={values.email}
           onChange={handleChange("email")}
           margin="normal"
@@ -100,7 +83,7 @@ export default function Signin(props) {
           id="password"
           type="password"
           label="Password"
-          className={classes.textField}
+          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
           value={values.password}
           onChange={handleChange("password")}
           margin="normal"
@@ -108,7 +91,7 @@ export default function Signin(props) {
         <br />
         {values.error && (
           <Typography component="p" color="error">
-            <Icon color="error" className={classes.error}>
+            <Icon color="error" sx={{ verticalAlign: "middle" }}>
               error
             </Icon>
             {values.error}
@@ -120,7 +103,7 @@ export default function Signin(props) {
           color="primary"
           variant="contained"
           onClick={clickSubmit}
-          className={classes.submit}
+          sx={{ margin: "auto", marginBottom: 2 }}
         >
           Log In
         </Button>

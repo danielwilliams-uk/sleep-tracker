@@ -1,19 +1,27 @@
 import React from "react";
-import { withRouter, Link } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import HomeIcon from "@material-ui/icons/Home";
-import Button from "@material-ui/core/Button";
+import { AppBar, Toolbar, Typography, IconButton, Button } from "@mui/material";
+import { Home as HomeIcon, Add as AddIcon } from "@mui/icons-material";
 import auth from "./../auth/auth-helper";
+import { Link, withRouter } from "react-router-dom";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
-    return { color: "#ff4081", paddingTop: 12 };
+    return { color: "#ff4081", paddingTop: 5 };
   } else {
-    return { color: "#ffffff", paddingTop: 12 };
+    return { color: "#ffffff", paddingTop: 5 };
   }
+};
+
+const isButtonActive = (history, path) => {
+  if (history.location.pathname.includes(path))
+    return { color: "#fffde7", backgroundColor: "#2bbd7e", marginRight: 10 };
+  else
+    return {
+      color: "#2bbd7e",
+      backgroundColor: "#ffffff",
+      border: "1px solid #2bbd7e",
+      marginRight: 10,
+    };
 };
 
 const Menu = withRouter(({ history }) => (
@@ -33,7 +41,7 @@ const Menu = withRouter(({ history }) => (
           {!auth.isAuthenticated() && (
             <span>
               <Link to="/signup" style={{ textDecoration: "none" }}>
-                <Button style={isActive(history, "/signup/")}>Sign up</Button>
+                <Button style={isActive(history, "/signup")}>Sign up</Button>
               </Link>
               <Link to="/signin" style={{ textDecoration: "none" }}>
                 <Button style={isActive(history, "/signin")}>Log in</Button>
@@ -42,34 +50,39 @@ const Menu = withRouter(({ history }) => (
           )}
         </span>
       </div>
-
       {auth.isAuthenticated() && (
-        <span>
-          <Link to="/sleepdata/new">
-            <Button style={isButtonActive(history, "/expenses/new")}>
-              <AddIcon style={{ marginRight: 4 }} /> Add Sleep Data
-            </Button>
-          </Link>
-          <Link to={"/user/" + auth.isAuthenticated().user._id}>
+        <div style={{ position: "absolute", right: 10 }}>
+          <span>
+            <Link to="/sleepdata/new">
+              <Button style={isButtonActive(history, "/sleepdata/new")}>
+                <AddIcon style={{ marginRight: 4 }} /> Add Sleep Data
+              </Button>
+            </Link>
+            <Link to={"/user/" + auth.isAuthenticated().user._id}>
+              <Button
+                style={{
+                  ...isActive(
+                    history,
+                    "/user/" + auth.isAuthenticated().user._id
+                  ),
+                  paddingTop: 12,
+                  verticalAlign: "middle",
+                }}
+              >
+                My Profile
+              </Button>
+            </Link>
             <Button
-              style={isActive(
-                history,
-                "/user/" + auth.isAuthenticated().user._id
-              )}
+              color="inherit"
+              style={{ paddingTop: 12, verticalAlign: "middle" }}
+              onClick={() => {
+                auth.clearJWT(() => history.push("/"));
+              }}
             >
-              My Profile
+              Sign out
             </Button>
-          </Link>
-          <Button
-            color="inherit"
-            style={{ paddingTop: 12 }}
-            onClick={() => {
-              auth.clearJWT(() => history.push("/"));
-            }}
-          >
-            Sign out
-          </Button>
-        </span>
+          </span>
+        </div>
       )}
     </Toolbar>
   </AppBar>

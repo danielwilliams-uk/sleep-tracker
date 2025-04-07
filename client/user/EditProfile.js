@@ -1,44 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { read, update } from "./api-user";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  TextField,
+  Typography,
+  Icon,
+} from "@mui/material";
 import { Redirect } from "react-router-dom";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Icon from "@material-ui/core/Icon";
 import auth from "./../auth/auth-helper";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme) => ({
-  card: {
-    maxWidth: 600,
-    margin: "auto",
-    textAlign: "center",
-    marginTop: theme.spacing(5),
-    paddingBottom: theme.spacing(2),
-  },
-  title: {
-    margin: theme.spacing(2),
-    color: theme.palette.protectedTitle,
-  },
-  error: {
-    verticalAlign: "middle",
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 300,
-  },
-  submit: {
-    margin: "auto",
-    marginBottom: theme.spacing(2),
-  },
-}));
+import { read, update } from "./api-user";
 
 export default function EditProfile({ match }) {
-  const classes = useStyles();
   const [values, setValues] = useState({
     name: "",
     password: "",
@@ -98,16 +72,27 @@ export default function EditProfile({ match }) {
   }
 
   return (
-    <Card className={classes.card}>
+    <Card
+      sx={{
+        maxWidth: 600,
+        margin: "auto",
+        textAlign: "center",
+        marginTop: 5,
+        paddingBottom: 2,
+      }}
+    >
       <CardContent>
-        <Typography variant="h6" className={classes.title}>
+        <Typography
+          variant="h6"
+          sx={{ margin: 2, color: "protectedTitle.main" }}
+        >
           Edit Profile
         </Typography>
         <TextField
           id="name"
           type="name"
           label="Name"
-          className={classes.textField}
+          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
           onChange={handleChange("name")}
           margin="normal "
         />
@@ -116,7 +101,7 @@ export default function EditProfile({ match }) {
           id="email"
           type="email"
           label="Email"
-          className={classes.textField}
+          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
           onChange={handleChange("email")}
           margin="normal "
         />
@@ -125,14 +110,14 @@ export default function EditProfile({ match }) {
           id="password"
           type="password"
           label="Password"
-          className={classes.textField}
+          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
           onChange={handleChange("password")}
           margin="normal "
         />
         <br />
         {values.error && (
           <Typography component="p" color="error">
-            <Icon color="error" className={classes.error}>
+            <Icon color="error" sx={{ verticalAlign: "middle" }}>
               error
             </Icon>
             {values.error}
@@ -144,7 +129,7 @@ export default function EditProfile({ match }) {
           color="primary"
           variant="contained"
           onClick={clickSubmit}
-          className={classes.submit}
+          sx={{ margin: "auto", marginBottom: 2 }}
         >
           Submit
         </Button>
