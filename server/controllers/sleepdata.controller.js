@@ -1,6 +1,7 @@
 import SleepData from "../models/SleepData";
 import dbErrorHandler from "../helpers/dbErrorHandler";
 
+// Create sleep data
 const create = async (req, res) => {
   try {
     req.body.recorded_by = req.auth._id;
@@ -39,4 +40,26 @@ const getUserSleepData = async (req, res, next, id) => {
   }
 };
 
-export default { create, getUserSleepData };
+// List by user for specific date range
+const listByUser = async (req, res) => {
+  let firstDay = new Date(req.query.firstDay);
+  let lastDay = new Date(req.query.lastDay);
+  try {
+    let sleepdatas = await SleepData.find({
+      $and: [
+        { date: { $gte: firstDay, $lte: lastDay } },
+        { userId: req.auth._id },
+      ],
+    })
+      .sort("date")
+      .populate("userId", "_id name");
+    return res.json(sleepdatas);
+  } catch (err) {
+    console.error("Error in listByUser:", err);
+    return res.status(400).json({
+      error: dbErrorHandler.getErrorMessage(err),
+    });
+  }
+};
+
+export default { create, getUserSleepData, listByUser };
