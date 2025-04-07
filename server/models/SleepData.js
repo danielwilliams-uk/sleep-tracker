@@ -7,16 +7,27 @@ const sleepDataSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    sleepDuration: {
-      type: Number, // Duration in minutes
+    duration: {
+      type: Number, // Duration in hours
+      min: 0,
+      max: 24,
       required: true,
     },
     gender: {
       type: String,
       required: true,
     },
+    age: {
+      type: Number,
+      required: true,
+    },
+    notes: {
+      type: String,
+      trim: true,
+    },
     date: {
       type: Date,
+      default: Date.now,
       required: true,
     },
   },
