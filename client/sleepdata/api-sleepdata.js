@@ -1,4 +1,4 @@
-import queryString from "query-string";
+import qs from "qs";
 
 const create = async (credentials, sleepdata) => {
   try {
@@ -7,7 +7,8 @@ const create = async (credentials, sleepdata) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: credentials?.t ? "Bearer " + credentials.t : undefined,
+        Authorization:
+          credentials && credentials.t ? "Bearer " + credentials.t : undefined,
       },
       body: JSON.stringify(sleepdata),
     });
@@ -24,7 +25,8 @@ const getUserSleepData = async (params, credentials, signal) => {
       signal: signal,
       headers: {
         Accept: "application/json",
-        Authorization: credentials?.t ? "Bearer " + credentials.t : undefined,
+        Authorization:
+          credentials && credentials.t ? "Bearer " + credentials.t : undefined,
       },
     });
     return await response.json();
@@ -34,14 +36,15 @@ const getUserSleepData = async (params, credentials, signal) => {
 };
 
 const listByUser = async (params, credentials, signal) => {
-  const query = queryString.stringify(params);
+  const query = qs.stringify(params);
   try {
     let response = await fetch("/api/sleepdata?" + query, {
       method: "GET",
       signal: signal,
       headers: {
         Accept: "application/json",
-        Authorization: credentials?.t ? "Bearer " + credentials.t : undefined,
+        Authorization:
+          credentials && credentials.t ? "Bearer " + credentials.t : undefined,
       },
     });
     return await response.json();
@@ -49,3 +52,5 @@ const listByUser = async (params, credentials, signal) => {
     console.log(err);
   }
 };
+
+export { create, getUserSleepData, listByUser };
