@@ -20,7 +20,7 @@ const MainRouter = () => {
         <Route path="/signup" component={Signup} />
         <Route path="/signin" component={Signin} />
         <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
-        <PrivateRoute path="/sleepdate/new" component={NewSleepData} />
+        <PrivateRoute path="/sleepdata/new" component={NewSleepData} />
         <Route path="/user/:userId" component={Profile} />
       </Switch>
     </div>
