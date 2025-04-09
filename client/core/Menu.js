@@ -36,6 +36,19 @@ const Menu = withRouter(({ history }) => (
         Sleep Tracker
       </Typography>
 
+      <div style={{ marginLeft: 20 }}>
+        <span>
+          {!auth.isAuthenticated() && (
+            <span>
+              <Link to="/sleepdata/new">
+                <Button style={isButtonActive(history, "/sleepdata/new")}>
+                  <AddIcon style={{ marginRight: 4 }} /> Add Sleep Data
+                </Button>
+              </Link>
+            </span>
+          )}
+        </span>
+      </div>
       <div style={{ position: "absolute", right: 10 }}>
         <span style={{ float: "right" }}>
           {!auth.isAuthenticated() && (
@@ -53,11 +66,18 @@ const Menu = withRouter(({ history }) => (
       {auth.isAuthenticated() && (
         <div style={{ position: "absolute", right: 10 }}>
           <span>
-            <Link to="/sleepdata/new">
-              <Button style={isButtonActive(history, "/sleepdata/new")}>
-                <AddIcon style={{ marginRight: 4 }} /> Add Sleep Data
+            <Link to="/sleepdata/all">
+              <Button
+                style={{
+                  ...isActive(history, "/sleepdata/all"),
+                  paddingTop: 12,
+                  verticalAlign: "middle",
+                }}
+              >
+                Sleep Data
               </Button>
             </Link>
+
             <Link to={"/user/" + auth.isAuthenticated().user._id}>
               <Button
                 style={{
