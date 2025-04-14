@@ -38,7 +38,7 @@ const Menu = withRouter(({ history }) => (
 
       <div style={{ marginLeft: 20 }}>
         <span>
-          {!auth.isAuthenticated() && (
+          {auth.isAuthenticated() && (
             <span>
               <Link to="/sleepdata/new">
                 <Button style={isButtonActive(history, "/sleepdata/new")}>
@@ -74,7 +74,7 @@ const Menu = withRouter(({ history }) => (
                   verticalAlign: "middle",
                 }}
               >
-                Sleep Data
+                View Sleep Data
               </Button>
             </Link>
 
