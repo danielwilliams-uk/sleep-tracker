@@ -21,9 +21,9 @@ const MainRouter = () => {
         <Route path="/signup" component={Signup} />
         <Route path="/signin" component={Signin} />
         <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
-        <PrivateRoute path="/sleepdata/new" component={NewSleepData} />
-        <PrivateRoute path="/sleepdata/all" component={SleepData} />
         <Route path="/user/:userId" component={Profile} />
+        <PrivateRoute path="/sleepdata/all" component={SleepData} />
+        <PrivateRoute path="/sleepdata/new" component={NewSleepData} />
       </Switch>
     </div>
   );
