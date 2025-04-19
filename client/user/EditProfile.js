@@ -33,7 +33,7 @@ export default function EditProfile({ match }) {
         if (data && data.error) {
           setValues({ ...values, error: data.error });
         } else {
-          setValues(data);
+          setValues({ ...values, name: data.name, email: data.email });
         }
       }
     );
@@ -88,52 +88,59 @@ export default function EditProfile({ match }) {
         >
           Edit Profile
         </Typography>
-        <TextField
-          id="name"
-          type="name"
-          label="Name"
-          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
-          onChange={handleChange("name")}
-          margin="normal "
-        />
-        <br />
-        <TextField
-          id="email"
-          type="email"
-          label="Email"
-          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
-          onChange={handleChange("email")}
-          margin="normal "
-        />
-        <br />
-        <TextField
-          id="password"
-          type="password"
-          label="Password"
-          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
-          onChange={handleChange("password")}
-          margin="normal "
-        />
-        <br />
-        {values.error && (
-          <Typography component="p" color="error">
-            <Icon color="error" sx={{ verticalAlign: "middle" }}>
-              error
-            </Icon>
-            {values.error}
-          </Typography>
-        )}
-      </CardContent>
-      <CardActions>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={clickSubmit}
-          sx={{ margin: "auto", marginBottom: 2 }}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            clickSubmit();
+          }}
         >
-          Submit
-        </Button>
-      </CardActions>
+          <TextField
+            id="name"
+            type="name"
+            label="Name"
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
+            onChange={handleChange("name")}
+            margin="normal"
+          />
+          <br />
+          <TextField
+            id="email"
+            type="email"
+            label="Email"
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
+            onChange={handleChange("email")}
+            margin="normal"
+          />
+          <br />
+          <TextField
+            id="password"
+            type="password"
+            label="Password"
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
+            onChange={handleChange("password")}
+            margin="normal"
+          />
+          <br />
+          {values.error && (
+            <Typography component="p" color="error">
+              <Icon color="error" sx={{ verticalAlign: "middle" }}>
+                error
+              </Icon>
+              {values.error}
+            </Typography>
+          )}
+          <CardActions>
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              sx={{ margin: "auto", marginBottom: 2 }}
+            >
+              Submit
+            </Button>
+          </CardActions>
+        </form>
+      </CardContent>
     </Card>
   );
 }
