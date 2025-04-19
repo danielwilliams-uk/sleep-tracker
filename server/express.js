@@ -26,9 +26,18 @@ devBundle.compile(app);
 const CURRENT_WORKING_DIR = process.cwd();
 app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")));
 
+// Ensure API routes are handled before SSR middleware
+app.use("/api", (req, res, next) => {
+  console.log("API route handler triggered for:", req.method, req.originalUrl);
+  next();
+});
+
+app.use("/", sleepRoutes);
+
 // Replace ServerStyleSheets logic with Emotion's ssr (stuff in older template deprecated for ssr)
 // Breaking changes from migrating to @mui. See docs: https://mui.com/x/migration/migration-pickers-lab/
 app.get("*", (req, res) => {
+  console.log("SSR middleware triggered for:", req.method, req.originalUrl);
   const cache = createEmotionCache();
   const { extractCriticalToChunks, constructStyleTagsFromChunks } =
     createEmotionServer(cache);
@@ -68,7 +77,6 @@ app.use(helmet());
 app.use(cors());
 app.use("/", userRoutes);
 app.use("/", authRoutes);
-app.use("/", sleepRoutes);
 
 // Auth error handling... Catch unauthorised errors
 app.use((err, req, res, next) => {
