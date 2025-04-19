@@ -4,27 +4,23 @@ import dbErrorHandler from "../helpers/dbErrorHandler";
 // Create sleep data
 const create = async (req, res) => {
   try {
-    req.body.recorded_by = req.auth._id;
-    const { name, gender, sleepDuration } = req.body;
-    const sleepData = new SleepData({
-      name,
-      gender,
-      sleepDuration,
-      date: new Date(),
-      userId: req.auth.user._id,
-    });
+    console.log(req.body);
+    req.body.userId = req.auth._id;
+    const sleepData = new SleepData(req.body);
     await sleepData.save();
     return res.status(200).json({
       message: "Sleep data recorded!",
       sleepData,
     });
   } catch (err) {
-    return res.status(400).json(dbErrorHandler.getErrorMessage(err));
+    return res.status(400).json({
+      error: dbErrorHandler.getErrorMessage(err),
+    });
   }
 };
 
 // Get sleep data for a user
-const getUserSleepData = async (req, res, next, id) => {
+const sleepDataByID = async (req, res, next, id) => {
   try {
     const sleepData = await SleepData.findByid(id)
       .populate("userId", "_id name")
@@ -42,10 +38,21 @@ const getUserSleepData = async (req, res, next, id) => {
 
 // List by user for specific date range
 const listByUser = async (req, res) => {
-  let firstDay = new Date(req.query.firstDay);
-  let lastDay = new Date(req.query.lastDay);
+  console.log("listByUser called with query parameters:", req.query);
+
+  let firstDay = req.query.firstDay;
+  let lastDay = req.query.lastDay;
+
+  if (!firstDay || !lastDay) {
+    console.error("Missing query parameters: firstDay or lastDay");
+    return res
+      .status(400)
+      .json({ error: "Missing query parameters: firstDay or lastDay" });
+  }
+  console.log("Validated query parameters:", { firstDay, lastDay });
+
   try {
-    let sleepdatas = await SleepData.find({
+    let sleepdata = await SleepData.find({
       $and: [
         { date: { $gte: firstDay, $lte: lastDay } },
         { userId: req.auth._id },
@@ -53,7 +60,12 @@ const listByUser = async (req, res) => {
     })
       .sort("date")
       .populate("userId", "_id name");
-    return res.json(sleepdatas);
+
+    console.log(
+      "=======================>>>> Final response being sent to frontend:",
+      sleepdata
+    );
+    res.json(sleepdata);
   } catch (err) {
     console.error("Error in listByUser:", err);
     return res.status(400).json({
@@ -62,4 +74,4 @@ const listByUser = async (req, res) => {
   }
 };
 
-export default { create, getUserSleepData, listByUser };
+export default { create, sleepDataByID, listByUser };
