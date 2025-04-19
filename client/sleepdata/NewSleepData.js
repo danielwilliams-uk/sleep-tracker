@@ -17,6 +17,7 @@ import { Link, Redirect } from "react-router-dom";
 export default function NewSleepData() {
   const [values, setValues] = useState({
     name: "",
+    age: "",
     gender: "",
     date: new Date(),
     duration: "",
@@ -35,6 +36,7 @@ export default function NewSleepData() {
   const clickSubmit = () => {
     const sleepdata = {
       name: values.name || undefined,
+      age: values.age || undefined,
       gender: values.gender || undefined,
       date: values.date || undefined,
       duration: values.duration || undefined,
@@ -83,6 +85,15 @@ export default function NewSleepData() {
             sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
             value={values.name}
             onChange={handleChange("name")}
+            margin="normal"
+          />
+          <br />
+          <TextField
+            id="age"
+            label="Age"
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
+            value={values.age}
+            onChange={handleChange("age")}
             margin="normal"
           />
           <br />
