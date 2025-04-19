@@ -50,6 +50,10 @@ const requireSignin = expressJwt({
   algorithms: ["HS256"], // Updates to docs means you need to add this for security or code breaks see docs here under 'Required Parameters': https://www.npmjs.com/package/express-jwt
 });
 
+console.log(
+  "============================>>>>>>>>>>>>>>>>> authCtrl.requireSignin middleware triggered"
+);
+
 const hasAuthorization = (req, res, next) => {
   const authorized = req.profile && req.auth && req.profile._id == req.auth._id;
   if (!authorized) {
