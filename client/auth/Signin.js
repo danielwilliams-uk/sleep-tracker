@@ -69,45 +69,53 @@ export default function Signin(props) {
             Log in below to track your sleep patterns.
           </Typography>
         </CardContent>
-        <TextField
-          id="email"
-          type="email"
-          label="Email"
-          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
-          value={values.email}
-          onChange={handleChange("email")}
-          margin="normal"
-        />
-        <br />
-        <TextField
-          id="password"
-          type="password"
-          label="Password"
-          sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
-          value={values.password}
-          onChange={handleChange("password")}
-          margin="normal"
-        />
-        <br />
-        {values.error && (
-          <Typography component="p" color="error">
-            <Icon color="error" sx={{ verticalAlign: "middle" }}>
-              error
-            </Icon>
-            {values.error}
-          </Typography>
-        )}
-      </CardContent>
-      <CardActions>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={clickSubmit}
-          sx={{ margin: "auto", marginBottom: 2 }}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            clickSubmit();
+          }}
         >
-          Log In
-        </Button>
-      </CardActions>
+          <TextField
+            id="email"
+            type="email"
+            label="Email"
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
+            value={values.email}
+            onChange={handleChange("email")}
+            margin="normal"
+          />
+          <br />
+          <TextField
+            id="password"
+            type="password"
+            label="Password"
+            autoComplete="current-password"
+            sx={{ marginLeft: 1, marginRight: 1, width: 300 }}
+            value={values.password}
+            onChange={handleChange("password")}
+            margin="normal"
+          />
+          <br />
+          {values.error && (
+            <Typography component="p" color="error">
+              <Icon color="error" sx={{ verticalAlign: "middle" }}>
+                error
+              </Icon>
+              {values.error}
+            </Typography>
+          )}
+          <CardActions>
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              sx={{ margin: "auto", marginBottom: 2 }}
+            >
+              Log In
+            </Button>
+          </CardActions>
+        </form>
+      </CardContent>
       <Typography variant="body2" sx={{ color: "text.secondary" }}>
         Don't have an account? <Link to="/signup">Sign up</Link>
       </Typography>
