@@ -20,7 +20,6 @@ import theme from "../theme";
 export default function SleepData() {
   const [redirectToSignin, setRedirectToSignin] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [error, setError] = useState("");
   const [sleepData, setSleepData] = useState([]);
   const jwt = auth.isAuthenticated();
   const date = new Date(),
@@ -28,25 +27,38 @@ export default function SleepData() {
     m = date.getMonth();
   const [firstDay, setFirstDay] = useState(new Date(y, m, 1));
   const [lastDay, setLastDay] = useState(new Date(y, m + 1, 0));
+  const error = null; // Initialize error to null or appropriate default value
 
   useEffect(() => {
+    console.log("======================>>>> useEffect called");
     const abortController = new AbortController();
     const signal = abortController.signal;
+    // console.log("firstDay:", firstDay, "lastDay:", lastDay);
+
     listByUser(
       { firstDay: firstDay, lastDay: lastDay },
       { t: jwt.token },
       signal
     ).then((data) => {
-      if (data.error) {
+      console.log("Response from backend:", data);
+      if (!data || typeof data !== "object") {
+        console.error("Invalid JSON response from API");
+        setRedirectToSignin(true);
+      } else if (data.error) {
         setRedirectToSignin(true);
       } else {
         setSleepData(data);
       }
     });
+    /*       .catch((err) => {
+        console.error("Error fetching sleep data:", err);
+        setRedirectToSignin(true);
+      }); */
+
     return function cleanup() {
       abortController.abort();
     };
-  }, [firstDay, lastDay]);
+  }, []);
 
   const handleSearchFieldChange = (name) => (date) => {
     if (name === "firstDay") {
@@ -57,15 +69,23 @@ export default function SleepData() {
   };
 
   const searchClicked = () => {
-    listByUser({ firstDay: firstDay, lastDay: lastDay }, { t: jwt.token }).then(
-      (data) => {
-        if (data.error) {
+    console.log("firstDay:", firstDay, "lastDay:", lastDay);
+    listByUser({ firstDay: firstDay, lastDay: lastDay }, { t: jwt.token })
+      .then((data) => {
+        console.log("Response from backend:", data);
+        if (!data || typeof data !== "object") {
+          console.error("Invalid JSON response from API");
+          setRedirectToSignin(true);
+        } else if (data.error) {
           setRedirectToSignin(true);
         } else {
           setSleepData(data);
         }
-      }
-    );
+      })
+      .catch((err) => {
+        console.error("Error fetching sleep data:", err);
+        setRedirectToSignin(true);
+      });
   };
 
   const handleChange = (name, index) => (event) => {
@@ -95,17 +115,21 @@ export default function SleepData() {
             label="SHOWING RECORDS FROM"
             value={firstDay}
             onChange={handleSearchFieldChange("firstDay")}
-            renderInput={(params) => (
-              <TextField {...params} sx={{ marginRight: 2, width: 240 }} />
-            )}
+            slots={{
+              textField: (params) => (
+                <TextField {...params} sx={{ marginRight: 2, width: 240 }} />
+              ),
+            }}
           />
           <DatePicker
             label="TO"
             value={lastDay}
             onChange={handleSearchFieldChange("lastDay")}
-            renderInput={(params) => (
-              <TextField {...params} sx={{ marginRight: 2, width: 240 }} />
-            )}
+            slots={{
+              textField: (params) => (
+                <TextField {...params} sx={{ marginRight: 2, width: 240 }} />
+              ),
+            }}
           />
         </LocalizationProvider>
         <Button variant="contained" color="primary" onClick={searchClicked}>
