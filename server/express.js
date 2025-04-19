@@ -32,7 +32,17 @@ app.use("/api", (req, res, next) => {
   next();
 });
 
+//Add middleware ( Added modules to configure Express)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(compress());
+app.use(helmet());
+app.use(cors());
+
 app.use("/", sleepRoutes);
+app.use("/", userRoutes);
+app.use("/", authRoutes);
 
 // Replace ServerStyleSheets logic with Emotion's ssr (stuff in older template deprecated for ssr)
 // Breaking changes from migrating to @mui. See docs: https://mui.com/x/migration/migration-pickers-lab/
@@ -67,16 +77,6 @@ app.get("*", (req, res) => {
     })
   );
 });
-
-//Add middleware ( Added modules to configure Express)
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(compress());
-app.use(helmet());
-app.use(cors());
-app.use("/", userRoutes);
-app.use("/", authRoutes);
 
 // Auth error handling... Catch unauthorised errors
 app.use((err, req, res, next) => {
