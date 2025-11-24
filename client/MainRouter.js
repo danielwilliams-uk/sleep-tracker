@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./core/Home";
 import Users from "./user/Users";
 import Signup from "./user/Signup";
@@ -15,16 +15,37 @@ const MainRouter = () => {
   return (
     <div>
       <Menu />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/users" component={Users} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/signin" component={Signin} />
-        <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
-        <Route path="/user/:userId" component={Profile} />
-        <PrivateRoute path="/sleepdata/all" component={SleepData} />
-        <PrivateRoute path="/sleepdata/new" component={NewSleepData} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route
+          path="/user/edit/:userId"
+          element={
+            <PrivateRoute>
+              <EditProfile />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/user/:userId" element={<Profile />} />
+        <Route
+          path="/sleepdata/all"
+          element={
+            <PrivateRoute>
+              <SleepData />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/sleepdata/new"
+          element={
+            <PrivateRoute>
+              <NewSleepData />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
     </div>
   );
 };

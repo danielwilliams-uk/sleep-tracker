@@ -12,7 +12,7 @@ import {
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import auth from "./../auth/auth-helper";
 import { remove } from "./api-user";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export default function DeleteUser(props) {
   const [open, setOpen] = useState(false);
@@ -45,7 +45,7 @@ export default function DeleteUser(props) {
 
   // Redirect user to Home view
   if (redirect) {
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 
   return (

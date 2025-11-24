@@ -14,7 +14,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import auth from "../auth/auth-helper";
 import { listByUser } from "./api-sleepdata";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import theme from "../theme";
 
 export default function SleepData() {
@@ -95,7 +95,7 @@ export default function SleepData() {
   };
 
   if (redirectToSignin) {
-    return <Redirect to="/signin" />;
+    return <Navigate to="/signin" />;
   }
 
   return (

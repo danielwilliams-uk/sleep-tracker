@@ -8,11 +8,12 @@ import {
   Typography,
   Icon,
 } from "@mui/material";
-import { Redirect } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import auth from "./../auth/auth-helper";
 import { read, update } from "./api-user";
 
-export default function EditProfile({ match }) {
+export default function EditProfile() {
+  const { userId } = useParams();
   const [values, setValues] = useState({
     name: "",
     password: "",
@@ -28,20 +29,22 @@ export default function EditProfile({ match }) {
     const abortController = new AbortController();
     const signal = abortController.signal;
 
-    read({ userId: match.params.userId }, { t: jwt.token }, signal).then(
-      (data) => {
-        if (data && data.error) {
-          setValues({ ...values, error: data.error });
-        } else {
-          setValues({ ...values, name: data.name, email: data.email });
-        }
+    read({ userId }, { t: jwt.token }, signal).then((data) => {
+      if (data && data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({ ...values, name: data.name, email: data.email });
       }
-    );
+    });
 
     return function cleanup() {
       abortController.abort();
     };
-  }, [match.params.userId]);
+  }, [userId]);
+
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
 
   const clickSubmit = () => {
     const jwt = auth.isAuthenticated();
@@ -51,24 +54,17 @@ export default function EditProfile({ match }) {
       password: values.password || undefined,
     };
 
-    update({ userId: match.params.userId }, { t: jwt.token }, user).then(
-      (data) => {
-        if (data && data.error) {
-          setValues({ ...values, error: data.error });
-        } else {
-          setValues({ ...values, userId: data._id, redirectToProfile: true });
-        }
+    update({ userId }, { t: jwt.token }, user).then((data) => {
+      if (data && data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({ ...values, redirectToProfile: true });
       }
-    );
+    });
   };
 
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
-  };
-
-  // If no error after fetch() call, render redirect to updated Profile page
   if (values.redirectToProfile) {
-    return <Redirect to={"/user/" + values.userId} />;
+    return <Navigate to={`/user/${userId}`} />;
   }
 
   return (

@@ -12,7 +12,7 @@ import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import auth from "../auth/auth-helper";
 import { create } from "./api-sleepdata";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export default function NewSleepData() {
   const [values, setValues] = useState({
@@ -23,6 +23,7 @@ export default function NewSleepData() {
     duration: "",
     notes: "",
     error: "",
+    redirectToReferrer: false,
   });
   const jwt = auth.isAuthenticated();
 
@@ -51,14 +52,15 @@ export default function NewSleepData() {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setValues({ ...values, error: "", redirect: true });
+        setValues({ ...values, redirectToReferrer: true });
       }
     });
   };
 
-  if (values.redirect) {
-    return <Redirect to={"/"} />;
+  if (values.redirectToReferrer) {
+    return <Navigate to="/sleepdata/all" />;
   }
+
   return (
     <div>
       <Card

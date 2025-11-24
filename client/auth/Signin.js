@@ -10,10 +10,9 @@ import {
 } from "@mui/material";
 import auth from "./../auth/auth-helper";
 import { signin } from "./api-auth";
-import { Redirect } from "react-router";
-import { Link } from "react-router-dom";
+import { Navigate, Link, useLocation } from "react-router-dom";
 
-export default function Signin(props) {
+export default function Signin() {
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -42,15 +41,11 @@ export default function Signin(props) {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const { from } = props.location.state || {
-    from: {
-      pathname: "/",
-    },
-  };
+  const location = useLocation();
+  const from = (location.state && location.state.from) || { pathname: "/" };
 
-  const { redirectToReferrer } = values;
-  if (redirectToReferrer) {
-    return <Redirect to={from} />;
+  if (values.redirectToReferrer) {
+    return <Navigate to={from.pathname} />;
   }
 
   return (
