@@ -1,4 +1,5 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CURRENT_WORKING_DIR = process.cwd();
 
 const config = {
@@ -31,6 +32,12 @@ const config = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(CURRENT_WORKING_DIR, "client/index.html"),
+      filename: "index.html",
+    }),
+  ],
 };
 
 module.exports = config;
