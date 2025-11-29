@@ -4,10 +4,10 @@ import authCtrl from "../controllers/auth.controller";
 
 const router = express.Router(); // You have the req() and res() methods on the object
 
-router.route("/api/users").get(userCtrl.list).post(userCtrl.create);
+router.route("/users").get(userCtrl.list).post(userCtrl.create);
 
 router
-  .route("/api/users/:userId")
+  .route("/users/:userId")
   .get(authCtrl.requireSignin, userCtrl.read)
   .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
   .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove);
