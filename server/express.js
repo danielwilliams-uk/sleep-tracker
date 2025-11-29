@@ -12,6 +12,13 @@ import sleepRoutes from "./routes/sleepdata.routes";
 
 const app = express();
 
+// In development, use webpack dev middleware for HMR and bundle serving
+if (process.env.NODE_ENV === "development") {
+  // Dynamically require to avoid issues in production
+  const devBundle = require("./devBundle").default;
+  devBundle.compile(app);
+}
+
 // Serve static assets from /dist
 const CURRENT_WORKING_DIR = process.cwd();
 app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")));
